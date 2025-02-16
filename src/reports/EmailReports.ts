@@ -5,6 +5,7 @@ import { Notification } from "../models/Notification.js";
 import dayjs from "dayjs";
 import { MQTT } from "../mqtt.js";
 import { NotificationActionResponse } from "../models/NotificationActionResponse.js";
+import { Options } from "selenium-webdriver/firefox.js";
 
 export class EmailReports {
   driver?: WebDriver;
@@ -58,11 +59,16 @@ export class EmailReports {
 
       await this.mqtt.SendMessage(message);
 
-
       let browserUrl: string | undefined = process.env.BROWSER_URL;
+      let browserHeadless: boolean = (process.env.BROWSER_HEADLESS ?? 'true') == 'true';
+
+      let options = new Options();
+
+      if (browserHeadless)
+        options = options.addArguments('--headless');
 
       if (browserUrl)
-        this.driver = new Builder().forBrowser(Browser.FIREFOX).usingServer(browserUrl).build();
+        this.driver = new Builder().forBrowser(Browser.FIREFOX).setFirefoxOptions(options).usingServer(browserUrl).build();
       else
         this.driver = new Builder().forBrowser(Browser.CHROME).build();
 
