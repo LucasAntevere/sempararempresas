@@ -1,7 +1,8 @@
 FROM node:18-alpine
 
 # Create app directory
-WORKDIR /src
+#WORKDIR /src
+WORKDIR /usr/src/app
 
 # Copy package.json and package-lock.json first to leverage Docker cache
 COPY package*.json ./

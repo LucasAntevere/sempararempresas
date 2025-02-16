@@ -1,0 +1,47 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "typescript",
+      "label": "typescript",
+      "tsconfig": "tsconfig.json"
+    },
+    {
+      "type": "docker-build",
+      "label": "docker-build",
+      "dependsOn": ["typescript"],
+      "dockerBuild": {
+        "dockerfile": "${workspaceFolder}/Dockerfile",
+        "tag": "sempararempresas:dev",
+        "context": "${workspaceFolder}"
+      }
+    },
+    {
+      "type": "docker-run",
+      "label": "docker-run: debug",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "docker-build"
+      ],
+      "dockerRun": {
+        "image": "sempararempresas:dev",
+        "envFiles": [
+          "${workspaceFolder}/.env.development.local"
+        ],
+        "command": "node --inspect=0.0.0.0:9229 ./src/app.js",
+        "ports": [
+          {
+            "containerPort": 9229,
+            "hostPort": 9229
+          }
+        ]
+      },
+      "node": {
+        "enableDebugging": true      
+      },
+
+    }
+  ]
+}

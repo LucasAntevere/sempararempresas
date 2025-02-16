@@ -5,23 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "node",
-            "request": "launch",
-            "name": "Launch Program",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}\\src\\app.ts",
-            "outFiles": [
-                "${workspaceFolder}/**/*.js"
-            ]
-        },
-        {
             "name": "Docker Node.js Launch",
             "type": "docker",
             "request": "launch",
             "preLaunchTask": "docker-run: debug",
-            "platform": "node"
-          }
+            "platform": "node",
+            "node": {
+                "sourceMaps": true
+            }
+            // "node": {
+            //     "remoteRoot": "/src",
+            //     "localRoot": "${workspaceFolder}/src"
+            // }       
+        }
     ]
 }
